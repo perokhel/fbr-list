@@ -9,7 +9,7 @@ const options = {
   renameHeaders: false,
 };
 
-const data = [];
+const fbrList = [];
 
 const readableStream = createReadStream("./data/fbrlist.csv");
 
@@ -24,9 +24,26 @@ parseStream(readableStream, options)
       name: row[2],
     };
 
-    data.push(record);
+    fbrList.push(record);
   })
   .on("end", (rowCount) => {
     console.log(rowCount);
-    console.log(data[506670]);
+    console.log(fbrList[506670]);
   });
+
+console.log(find);
+
+export default function findInTheList(searchString) {
+  return fbrList.filter((obj) => {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = obj[key];
+        const valueString = typeof value === "string" ? value : String(value); // Convert non-strings to strings
+        if (valueString.toLowerCase().includes(searchString.toLowerCase())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  });
+}
