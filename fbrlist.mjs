@@ -1,48 +1,61 @@
 import { createReadStream } from "fs";
 import { parseStream } from "fast-csv";
 
-const options = {
-  objectMode: true,
-  delimiter: ",",
-  quote: null,
-  headers: false,
-  renameHeaders: false,
-};
+// initialize list from csv file
+const fbrList = getListFromFile();
 
-const fbrList = [];
+// displayTest("khan jatt");
 
-const readableStream = createReadStream("./data/fbrlist.csv");
+export function searchRecords(req, res) {
+  let searchStr = req.body.searchFor;
+  res.json(findInTheList(searchStr));
+}
 
-parseStream(readableStream, options)
-  .on("error", (error) => {
-    console.log(error);
-  })
-  .on("data", (row) => {
-    let record = {
-      serial_no: row[0],
-      id: row[1],
-      name: row[2],
-    };
+function displayTest(str) {
+  // wait for getListFromFile() to initialize the list from csv
+  setTimeout(() => {
+    console.log(findInTheList(str));
+  }, 3000);
+}
 
-    fbrList.push(record);
-  })
-  .on("end", (rowCount) => {
-    console.log(rowCount);
-    console.log(fbrList[506670]);
-  });
+function getListFromFile() {
+  const readableStream = createReadStream("./data/fbrlist.csv");
+  const list = [];
+  const options = {
+    objectMode: true,
+    delimiter: ",",
+    quote: null,
+    headers: false,
+    renameHeaders: false,
+  };
+  // read records from csv file and copy into list array
+  parseStream(readableStream, options)
+    .on("error", (error) => {
+      console.log(error);
+    })
+    .on("data", (row) => {
+      let record = {
+        serial_no: row[0],
+        id: row[1],
+        name: row[2],
+      };
 
-console.log(find);
+      list.push(record);
+    })
+    .on("end", (rowCount) => {});
+  return list;
+}
 
 export default function findInTheList(searchString) {
   return fbrList.filter((obj) => {
     for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const value = obj[key];
-        const valueString = typeof value === "string" ? value : String(value); // Convert non-strings to strings
-        if (valueString.toLowerCase().includes(searchString.toLowerCase())) {
-          return true;
-        }
+      //if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const value = obj[key];
+      const valueString = typeof value === "string" ? value : String(value); // Convert non-strings to strings
+      if (valueString.toLowerCase().includes(searchString.toLowerCase())) {
+        return true;
       }
+      //}
     }
     return false;
   });

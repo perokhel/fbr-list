@@ -3,7 +3,7 @@ import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import { fileURLToPath } from "url";
-import findInTheList from "./fbrlist.mjs";
+import { searchRecords } from "./fbrlist.mjs";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -28,6 +28,8 @@ app.use(express.static("public"));
 app.get("/time", (req, res) => {
   res.send("Current Time is:" + new Date().getTime());
 });
+
+app.post("/fbr", (req, res) => searchRecords(req, res));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
