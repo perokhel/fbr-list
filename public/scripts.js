@@ -1,6 +1,8 @@
 const btnSearch = document.getElementById("btn-search");
 const searchInput = document.getElementById("search");
 const table = document.getElementById("tbl-data");
+const message = document.getElementById("message");
+const spanner = document.getElementById("prog-spanner");
 
 btnSearch.onclick = rePopulateTable;
 
@@ -33,10 +35,12 @@ async function rePopulateTable(event) {
   event.preventDefault();
   const searchFor = searchInput?.value.trim();
   if (searchFor == "") {
-    console.log("Search empty, please enter something to search!");
+    message.innerHTML = "Search empty, please enter something to search!";
     return;
   }
 
+  message.innerHTML = "Loading..... Please wait!";
+  spanner.hidden = false;
   const searchResults = await searchFBRList(searchFor);
 
   if (searchResults.length < 1)
@@ -45,11 +49,10 @@ async function rePopulateTable(event) {
       id: NaN,
       name: "No Record Found!",
     });
-  const newRows = searchResults.map((result) => constructRow(result));
 
-  resetTableBody();
-  let tbody = table.tBodies[0];
-  newRows.forEach((row) => tbody.appendChild(row));
+  refreshTableBody(searchResults);
+  spanner.hidden = true;
+  message.innerHTML = `<strong>${searchResults.length}</strong> records found.`;
 }
 
 function constructRow(record) {
@@ -64,23 +67,16 @@ function constructRow(record) {
   return newRow;
 }
 
-function getDummyList() {
-  const dummyList = [];
-  const record = {
-    sr_no: 87383,
-    id: 6104578692733,
-    name: "Mufaddal Hussain Vohra",
-  };
-  dummyList.push(record);
-  return dummyList;
-}
-
-function resetTableBody() {
-  let tbody = table.tBodies[0];
-  if (tbody != null) {
-    table.removeChild(tbody);
-    tbody = null;
+function refreshTableBody(searchResults) {
+  let tBody = table.tBodies[0];
+  if (tBody != null) {
+    table.removeChild(tBody);
+    [...tBody.rows].forEach((row) => tBody.removeChild(row));
+    tBody = null;
   }
-  tbody = table.createTBody();
-  tbody.id = "list_tbody";
+  tBody = document.createElement("TBODY");
+  tBody.id = "list_tbody";
+  const newRows = searchResults.map((result) => constructRow(result));
+  newRows.forEach((row) => tBody.appendChild(row));
+  table.appendChild(tBody);
 }

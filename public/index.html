@@ -18,34 +18,49 @@
           </div>
           <div class="row">
             <div class="col">
-              <form class="d-flex container-fluid" role="search">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  id="search"
-                />
-                <button
-                  class="btn btn-outline-success"
-                  type="submit"
-                  id="btn-search"
-                >
-                  Search
-                </button>
-                <button
-                  class="btn btn-outline-success"
-                  type="button"
-                  id="prog-spanner"
-                  hidden="true"
-                  disabled
-                >
-                  <span
-                    class="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                </button>
+              <form role="search">
+                <div class="row mb-3">
+                  <div class="col-sm-12">
+                    <input
+                      class="form-control me-2"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                      id="search"
+                    />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-10">
+                    <button
+                      class="btn btn-outline-primary form-control"
+                      type="submit"
+                      id="btn-search"
+                    >
+                      Search
+                    </button>
+                  </div>
+                  <div class="col-sm-2">
+                    <button
+                      class="btn btn-outline-primary form-control"
+                      type="button"
+                      id="prog-spanner"
+                      hidden="true"
+                      disabled
+                    >
+                      <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-12">
+                    <div class="form-text" id="message"></div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -61,23 +76,7 @@
             <th scope="col">Name</th>
           </tr>
         </thead>
-        <tbody id="list_tbody">
-          <tr>
-            <td>6555</td>
-            <td>1730152334789</td>
-            <td>Syed Muhammad Abid Ali Shah</td>
-          </tr>
-          <tr>
-            <td>503203</td>
-            <td>1752252334635</td>
-            <td>Mukarram Ali Khan</td>
-          </tr>
-          <tr>
-            <td>303588</td>
-            <td>2120452337632</td>
-            <td>Sikandar Zul Qarnain</td>
-          </tr>
-        </tbody>
+        <tbody id="list_tbody"></tbody>
       </table>
     </div>
   </body>
